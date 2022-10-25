@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import  ttk
 janela = Tk()
 class Aplicacao():
     def __init__(self):
@@ -6,6 +7,7 @@ class Aplicacao():
         self.tela()
         self.frames_tela()
         self.widgets_frame1()
+        self.lista_frame2()
         #necessario looping pra manter janela aberta
         janela.mainloop()
     def tela(self):
@@ -75,5 +77,31 @@ class Aplicacao():
         self.cidade_entry = Entry(self.frame1)
         self.cidade_entry.place(relx=0.5, rely=0.7, relwidth=0.4)
 
+    def lista_frame2(self):
+        """LISTA DE EXIBICAO"""
+        style = ttk.Style(janela)
+        style.theme_use('clam')
+        self.listaCli = ttk.Treeview(self.frame2, height=3, column=("col1","col2","col3","col4"))
+        self.listaCli.heading("#0", text="")
+        self.listaCli.heading("#1", text="Código")
+        self.listaCli.heading("#2", text="Nome")
+        self.listaCli.heading("#3", text="Telefone")
+        self.listaCli.heading("#4", text="Cidade")
+
+        """PERCENTUAL PROPORCIONAL DA TELA"""
+        #o frame tem 500px e foi passado um percentual pra cada campo> 50= 10% dos 500.. 200=40% dos 500
+        self.listaCli.column("#0", width=1)
+        self.listaCli.column("#1", width=50)
+        self.listaCli.column("#2", width=200)
+        self.listaCli.column("#3", width=125)
+        self.listaCli.column("#4", width=125)
+
+        self.listaCli.place(relx=0.01, rely=0.1, relwidth=0.95, relheight=0.85)
+
+        #BARRAA DE ROLAGEM
+        self.scroolLista = Scrollbar(self.frame2, orient='vertical')
+        self.listaCli.configure(yscroll=self.scroolLista.set)
+        #x = encostado a direita
+        self.scroolLista.place(relx=0.96, rely=0.1, relwidth=0.04, relheight=0.85)
 Aplicacao()
 
