@@ -1,7 +1,14 @@
 from tkinter import *
 from tkinter import  ttk
 janela = Tk()
-class Aplicacao():
+
+class Funcs():
+    def limpa_tela(self):
+        self.codigo_entry.delete(0, END)
+        self.nome_entry.delete(0, END)
+        self.telefone_entry.delete(0, END)
+        self.cidade_entry.delete(0, END)
+class Aplicacao(Funcs):
     def __init__(self):
         self.janela = janela
         self.tela()
@@ -29,7 +36,7 @@ class Aplicacao():
     def widgets_frame1(self):
         """Botão limpar dados"""
         self.bt_limpar = Button(self.frame1, text="Limpar", bd=2, bg='#107db2',
-                                fg='white', font=('verdana','8', 'bold'))
+                                fg='white', font=('verdana','8', 'bold'), command=self.limpa_tela)
         self.bt_limpar.place(relx=0.2, rely=0.1, relwidth=0.1, relheight=0.15)
         """Botão buscar dados"""
         self.bt_buscar = Button(self.frame1, text="Buscar", bd=2, bg='#107db2',
