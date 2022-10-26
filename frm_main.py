@@ -1,5 +1,7 @@
 from tkinter import *
 from tkinter import  ttk
+import sqlite3
+
 janela = Tk()
 
 class Funcs():
@@ -8,6 +10,26 @@ class Funcs():
         self.nome_entry.delete(0, END)
         self.telefone_entry.delete(0, END)
         self.cidade_entry.delete(0, END)
+    def conecta_db(self):
+        self.conn = sqlite3.connect("clientes.db")
+        self.cursor = self.conn.cursor()
+    def desconecta_db(self):
+        self.conn.close()
+    def montaTabelas(self):
+        self.conecta_db()
+        print('Conectando ao banco de dados')
+        ### criar tabela
+        self.cursor.execute("""
+        CREATE TABLE IF NOT EXISTS clientes (
+            cod INTEGER PRIMARY KEY,
+            nome_cliente CHAR(40) NOT NULL,
+            telefone INTEGER(20),
+            cidade CHAR(40)
+            );
+            """)
+        self.conn.commit();
+        print("Banco de dados criado")
+        self.desconecta_db()
 class Aplicacao(Funcs):
     def __init__(self):
         self.janela = janela
@@ -15,6 +37,7 @@ class Aplicacao(Funcs):
         self.frames_tela()
         self.widgets_frame1()
         self.lista_frame2()
+        self.montaTabelas()
         #necessario looping pra manter janela aberta
         janela.mainloop()
     def tela(self):
