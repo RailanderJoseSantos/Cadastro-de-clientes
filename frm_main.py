@@ -30,6 +30,27 @@ class Funcs():
         self.conn.commit();
         print("Banco de dados criado")
         self.desconecta_db()
+
+    def add_cliente(self):
+        self.codigo = self.codigo_entry.get()
+        self.nome = self.nome_entry.get()
+        self.cidade = self.cidade_entry.get()
+        self.telefone = self.telefone_entry.get()
+        self.conecta_db()
+        self.cursor.execute("""INSERT INTO clientes (nome_cliente, telefone, cidade)
+         VALUES(?, ?, ?)""",(self.nome, self.telefone, self.cidade))
+        self.conn.commit()
+        self.desconecta_db()
+        self.select_lista()
+        self.limpa_tela()
+    def select_lista(self):
+        #limpando a lista de exibição
+        self.listaCli.delete(*self.listaCli.get_children())
+        self.conecta_db()
+        lista = self.cursor.execute(""" SELECT cod, nome_cliente, telefone, cidade FROM clientes ORDER BY nome_cliente ASC; """)
+        for i in lista:
+            self.listaCli.insert("",END, values=i)
+        self.desconecta_db()
 class Aplicacao(Funcs):
     def __init__(self):
         self.janela = janela
@@ -38,6 +59,7 @@ class Aplicacao(Funcs):
         self.widgets_frame1()
         self.lista_frame2()
         self.montaTabelas()
+        self.select_lista()
         #necessario looping pra manter janela aberta
         janela.mainloop()
     def tela(self):
@@ -66,8 +88,8 @@ class Aplicacao(Funcs):
                                 fg='white', font=('verdana','8', 'bold'))
         self.bt_buscar.place(relx=0.3, rely=0.1, relwidth=0.1, relheight=0.15)
         """Botão novo"""
-        self.bt_novo = Button(self.frame1, text="Novo", bd=2, bg='#107db2',
-                                fg='white', font=('verdana','8', 'bold'))
+        self.bt_novo = Button(self.frame1, text="Salvar", bd=2, bg='#107db2',
+                                fg='white', font=('verdana','8', 'bold'), command=self.add_cliente)
         self.bt_novo.place(relx=0.6, rely=0.1, relwidth=0.1, relheight=0.15)
         """Botão alterar dados"""
         self.bt_alterar = Button(self.frame1, text="Alterar", bd=2, bg='#107db2',
