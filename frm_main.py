@@ -1,10 +1,31 @@
-import webbrowser
 from tkinter import *
 from tkinter import ttk, messagebox
 import sqlite3
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import  letter, A4
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.platypus import SimpleDocTemplate, Image
+import webbrowser
 
 janela = Tk()
 
+class Relatorios():
+    def printCliente(self,nomeCliente):
+        webbrowser.open(nomeCliente+".pdf")
+    def geraRelatCliente(self, nomeCliente):
+        self.cliente = canvas.Canvas(nomeCliente+".pdf")
+        self.codigoRel = self.codigo_entry.get()
+        self.nomeRel = self.nome_entry.get()
+        self.telefoneRel = self.telefone_entry.get()
+        self.cidadeRel = self.cidade_entry.get()
+
+        self.cliente.setFont("Helvetica-Bold", 24)
+        self.cliente.drawString(200, 790, "Relatório de "+nomeCliente)
+
+        self.cliente.showPage()
+        self.cliente.save()
+        self.printCliente(nomeCliente)
 class Funcs():
     def limpa_tela(self):
         self.codigo_entry.delete(0, END)
@@ -88,7 +109,9 @@ class Funcs():
         self.desconecta_db()
         self.select_lista()
         self.limpa_tela()
-class Aplicacao(Funcs):
+
+    #se uma classe vai usar outra as outras deve passada por parametro
+class Aplicacao(Funcs, Relatorios):
     def __init__(self):
         self.janela = janela
         self.tela()
@@ -204,11 +227,14 @@ class Aplicacao(Funcs):
 
         def Quit(): self.janela.destroy()
         menubar.add_cascade(label="Opções", menu = filemenu)
-        menubar.add_cascade(label="Sobre", menu=filemenu2)
+        menubar.add_cascade(label="Relatórios", menu=filemenu2)
 
-        filemenu.add_command(label="Sair", command=Quit)
-        filemenu2.add_cascade(label="Limpa Cliente", command=self.limpa_tela)
-        filemenu2.add_separator()
+        filemenu.add_cascade(label="Limpa Cliente", command=self.limpa_tela)
+        #lambda me permite passar parametro dentro do command
+        filemenu2.add_cascade(label="Rel. Cadastro", command=lambda:self.geraRelatCliente(self.nome_entry.get()))
         filemenu2.add_cascade(label="Suporte", command=lambda: webbrowser.open('https://wa.me/+5531991335387'))
+        filemenu2.add_separator()
+        filemenu.add_command(label="Sair", command=Quit)
+
 Aplicacao()
 
