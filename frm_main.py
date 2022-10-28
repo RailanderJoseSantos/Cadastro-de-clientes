@@ -1,3 +1,4 @@
+import webbrowser
 from tkinter import *
 from tkinter import ttk, messagebox
 import sqlite3
@@ -96,6 +97,7 @@ class Aplicacao(Funcs):
         self.lista_frame2()
         self.montaTabelas()
         self.select_lista()
+        self.Menus()
         #necessario looping pra manter janela aberta
         janela.mainloop()
     def tela(self):
@@ -195,6 +197,18 @@ class Aplicacao(Funcs):
         self.listaCli.bind("<Double-1>", self.OneDoubleClick)
 
     def Menus(self):
-        pass
+        menubar = Menu(self.janela)
+        self.janela.config(menu=menubar)
+        filemenu = Menu(menubar, tearoff=0)
+        filemenu2 = Menu(menubar,tearoff=0)
+
+        def Quit(): self.janela.destroy()
+        menubar.add_cascade(label="Opções", menu = filemenu)
+        menubar.add_cascade(label="Sobre", menu=filemenu2)
+
+        filemenu.add_command(label="Sair", command=Quit)
+        filemenu2.add_cascade(label="Limpa Cliente", command=self.limpa_tela)
+        filemenu2.add_separator()
+        filemenu2.add_cascade(label="Suporte", command=lambda: webbrowser.open('https://wa.me/+5531991335387'))
 Aplicacao()
 
