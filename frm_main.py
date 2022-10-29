@@ -127,6 +127,7 @@ class Funcs():
         self.limpa_tela()
 
     def busca_cliente(self):
+
         self.conecta_db()
         self.listaCli.delete(*self.listaCli.get_children())
         if self.nome_entry.get() !="":
@@ -162,6 +163,8 @@ class Funcs():
             for i in buscatelefoneCli:
                 self.listaCli.insert("",END, values=i)
             self.limpa_tela()
+        else:
+            self.select_lista()
         self.desconecta_db()
 
     #se uma classe vai usar outra as outras deve passada por parametro
@@ -195,7 +198,11 @@ class Aplicacao(Funcs, Relatorios):
         self.frame2.place(relx=0.02,rely=0.5, relwidth=0.96, relheight=0.46)
     def widgets_frame1(self):
         """Botão limpar dados"""
+        self.moldura_bt = Canvas(self.frame1, bd=0, bg='#1e3743',highlightbackground='gray',
+                                 highlightthickness=5)
+        self.moldura_bt.place(relx=0.19, rely=0.08, relwidth=0.22,  relheight=0.19)
         self.bt_limpar = Button(self.frame1, text="Limpar", bd=2, bg='#107db2',
+                                activebackground='#108ecb', activeforeground='white',
                                 fg='white', font=('verdana','8', 'bold'), command=self.limpa_tela)
         self.bt_limpar.place(relx=0.2, rely=0.1, relwidth=0.1, relheight=0.15)
         """Botão buscar dados"""
