@@ -126,6 +126,44 @@ class Funcs():
         self.select_lista()
         self.limpa_tela()
 
+    def busca_cliente(self):
+        self.conecta_db()
+        self.listaCli.delete(*self.listaCli.get_children())
+        if self.nome_entry.get() !="":
+            self.nome_entry.insert(END, '%')
+            nome = self.nome_entry.get()
+            self.cursor.execute(
+            """ SELECT cod, nome_cliente, telefone, cidade FROM clientes 
+            WHERE nome_cliente LIKE '%s' ORDER BY nome_cliente ASC""" %nome
+            )
+            buscanomeCli = self.cursor.fetchall()
+            for i in buscanomeCli:
+                self.listaCli.insert("",END, values=i)
+            self.limpa_tela()
+        elif self.cidade_entry.get() !="":
+            self.cidade_entry.insert(END, '%')
+            cidade = self.cidade_entry.get()
+            self.cursor.execute(
+            """ SELECT cod, nome_cliente, telefone, cidade FROM clientes 
+            WHERE cidade LIKE '%s' ORDER BY cidade ASC""" %cidade
+            )
+            buscacidadeCli = self.cursor.fetchall()
+            for i in buscacidadeCli:
+                self.listaCli.insert("",END, values=i)
+            self.limpa_tela()
+        elif self.telefone_entry.get() !="":
+            self.telefone_entry.insert(END, '%')
+            telefone = self.telefone_entry.get()
+            self.cursor.execute(
+            """ SELECT cod, nome_cliente, telefone, cidade FROM clientes 
+            WHERE telefone LIKE '%s' """ %telefone
+            )
+            buscatelefoneCli = self.cursor.fetchall()
+            for i in buscatelefoneCli:
+                self.listaCli.insert("",END, values=i)
+            self.limpa_tela()
+        self.desconecta_db()
+
     #se uma classe vai usar outra as outras deve passada por parametro
 class Aplicacao(Funcs, Relatorios):
     def __init__(self):
@@ -162,7 +200,7 @@ class Aplicacao(Funcs, Relatorios):
         self.bt_limpar.place(relx=0.2, rely=0.1, relwidth=0.1, relheight=0.15)
         """Botão buscar dados"""
         self.bt_buscar = Button(self.frame1, text="Buscar", bd=2, bg='#107db2',
-                                fg='white', font=('verdana','8', 'bold'))
+                                fg='white', font=('verdana','8', 'bold'), command=self.busca_cliente)
         self.bt_buscar.place(relx=0.3, rely=0.1, relwidth=0.1, relheight=0.15)
         """Botão novo"""
         self.bt_novo = Button(self.frame1, text="Salvar", bd=2, bg='#107db2',
