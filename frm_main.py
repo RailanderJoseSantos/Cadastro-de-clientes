@@ -8,7 +8,6 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import SimpleDocTemplate, Image
 import webbrowser
-
 janela = Tk()
 
 class Relatorios():
@@ -42,6 +41,7 @@ class Relatorios():
         self.layoutRelatorio.save()
         nomeCli = self.nomeRel
         self.printCliente(nomeCli)
+
 class Funcs():
     def limpa_tela(self):
         self.codigo_entry.delete(0, END)
