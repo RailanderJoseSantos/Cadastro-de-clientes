@@ -10,7 +10,7 @@ from reportlab.platypus import SimpleDocTemplate, Image
 import webbrowser
 from tkinter import  tix
 janela = tix.Tk()
-
+from tkinter import messagebox
 #pyinstaller --onefile --noconsole --windowed sistema.py
 class Relatorios():
     def printCliente(self,nomeCliente):
@@ -77,13 +77,17 @@ class Funcs():
         self.telefone = self.telefone_entry.get()
     def add_cliente(self):
         self.variaveis()
-        self.conecta_db()
-        self.cursor.execute("""INSERT INTO clientes (nome_cliente, telefone, cidade)
-         VALUES(?, ?, ?)""",(self.nome, self.telefone, self.cidade))
-        self.conn.commit()
-        self.desconecta_db()
-        self.select_lista()
-        self.limpa_tela()
+        if self.nome_entry.get() == "" or self.cidade_entry.get() == "":
+            msg = "Para cadastrar o cliente é necessário inserir o nome e cidade"
+            messagebox.showinfo("Cadastro de clientes - Aviso!",msg)
+        else:
+            self.conecta_db()
+            self.cursor.execute("""INSERT INTO clientes (nome_cliente, telefone, cidade)
+             VALUES(?, ?, ?)""",(self.nome, self.telefone, self.cidade))
+            self.conn.commit()
+            self.desconecta_db()
+            self.select_lista()
+            self.limpa_tela()
     def select_lista(self):
         #limpando a lista de exibição
         self.listaCli.delete(*self.listaCli.get_children())
@@ -199,63 +203,82 @@ class Aplicacao(Funcs, Relatorios):
         #altura começa em 50%: 0.5
         self.frame2.place(relx=0.02,rely=0.5, relwidth=0.96, relheight=0.46)
     def widgets_frame1(self):
+        self.abas = ttk.Notebook(self.frame1)
+        self.aba1 = Frame(self.abas)
+        self.aba2 = Frame(self.abas)
 
-        self.moldura_bt = Canvas(self.frame1, bd=0, bg='#1e3743',highlightbackground='gray',
+        self.aba1.configure(background="#dfe3ee")
+        self.aba2.configure(background="lightgray")
+        self.abas.add(self.aba1, text="Clientes")
+        self.abas.add(self.aba2, text="Aba 2")
+
+        self.abas.place(relx=0, rely=0, relwidth=0.98, relheight=0.98)
+
+        self.moldura_bt = Canvas(self.aba1, bd=0, bg='#1e3743',highlightbackground='gray',
                                  highlightthickness=5)
         self.moldura_bt.place(relx=0.19, rely=0.08, relwidth=0.22,  relheight=0.19)
         """Botão limpar dados"""
-        self.bt_limpar = Button(self.frame1, text="Limpar", bd=2, bg='#107db2',
+        self.bt_limpar = Button(self.aba1, text="Limpar", bd=2, bg='#107db2',
                                 activebackground='#108ecb', activeforeground='white',
                                 fg='white', font=('verdana','8', 'bold'), command=self.limpa_tela)
         self.bt_limpar.place(relx=0.2, rely=0.1, relwidth=0.1, relheight=0.15)
         """Botão buscar dados"""
-        self.bt_buscar = Button(self.frame1, text="Buscar", bd=2, bg='#107db2',
+        self.bt_buscar = Button(self.aba1, text="Buscar", bd=2, bg='#107db2',
                                 fg='white', font=('verdana','8', 'bold'), command=self.busca_cliente)
         self.bt_buscar.place(relx=0.3, rely=0.1, relwidth=0.1, relheight=0.15)
 
-        self.balao_buscar = tix.Balloon(self.frame1)
+        self.balao_buscar = tix.Balloon(self.aba1)
         self.balao_buscar.bind_widget(self.bt_buscar, balloonmsg="Digite nome ou cidade do cliente que deseja pesquisar")
         """Botão novo"""
-        self.bt_novo = Button(self.frame1, text="Salvar", bd=2, bg='#107db2',
+        self.bt_novo = Button(self.aba1, text="Salvar", bd=2, bg='#107db2',
                                 fg='white', font=('verdana','8', 'bold'), command=self.add_cliente)
         self.bt_novo.place(relx=0.6, rely=0.1, relwidth=0.1, relheight=0.15)
         """Botão alterar dados"""
-        self.bt_alterar = Button(self.frame1, text="Alterar", bd=2, bg='#107db2',
+        self.bt_alterar = Button(self.aba1, text="Alterar", bd=2, bg='#107db2',
                                 fg='white', font=('verdana','8', 'bold'), command=self.altera_cliente)
         self.bt_alterar.place(relx=0.7, rely=0.1, relwidth=0.1, relheight=0.15)
         """Botão apagar dados"""
-        self.bt_apagar = Button(self.frame1, text="Apagar", bd=2, bg='#107db2',
+        self.bt_apagar = Button(self.aba1, text="Apagar", bd=2, bg='#107db2',
                                 fg='white', font=('verdana','8', 'bold'), command=self.deleta_cliente)
         self.bt_apagar.place(relx=0.8, rely=0.1, relwidth=0.1, relheight=0.15)
 
 
 
         #criacao da label e entrada do codigo
-        self.lb_codigo = Label(self.frame1, text="Código",bg='#dfe3ee', fg='#107db2')
+        self.lb_codigo = Label(self.aba1, text="Código",bg='#dfe3ee', fg='#107db2')
         self.lb_codigo.place(relx=0.05, rely=0.05)
         
-        self.codigo_entry = Entry(self.frame1,bg='lightgray', fg='#000')
+        self.codigo_entry = Entry(self.aba1,bg='lightgray', fg='#000')
         self.codigo_entry.place(relx=0.05, rely=0.15, relwidth=0.08)
 
         #criacao da label e entrada do nome cliente
-        self.lb_nome = Label(self.frame1, text="Nome",bg='#dfe3ee', fg='#107db2')
+        self.lb_nome = Label(self.aba1, text="Nome",bg='#dfe3ee', fg='#107db2')
         self.lb_nome.place(relx=0.05, rely=0.35)
         
-        self.nome_entry = Entry(self.frame1)
+        self.nome_entry = Entry(self.aba1)
         self.nome_entry.place(relx=0.05, rely=0.45, relwidth=0.8)
 
         #criacao da label e entrada do telefone
-        self.lb_telefone = Label(self.frame1, text="Telefone",bg='#dfe3ee', fg='#107db2')
+        self.lb_telefone = Label(self.aba1, text="Telefone",bg='#dfe3ee', fg='#107db2')
         self.lb_telefone.place(relx=0.05, rely=0.6)
         
-        self.telefone_entry = Entry(self.frame1)
+        self.telefone_entry = Entry(self.aba1)
         self.telefone_entry.place(relx=0.05, rely=0.7, relwidth=0.4)
 
         #criacao da label e entrada da cidade
-        self.lb_cidade = Label(self.frame1, text="Cidade",bg='#dfe3ee', fg='#107db2')
+        self.lb_cidade = Label(self.aba1, text="Cidade",bg='#dfe3ee', fg='#107db2')
         self.lb_cidade.place(relx=0.5, rely=0.6)
-        self.cidade_entry = Entry(self.frame1)
+        self.cidade_entry = Entry(self.aba1)
         self.cidade_entry.place(relx=0.5, rely=0.7, relwidth=0.4)
+
+        ### drop down button
+        self.TipVar = StringVar()
+        self.TipV = ("Solteiro(a)","Casado(a)","Divorciado(a)","Viúvo(a)")
+        self.TipVar.set("Solteiro(a)")
+        self.popupMenu = OptionMenu(self.aba2, self.TipVar, *self.TipV)
+        self.popupMenu.place(relx=0.1, rely=0.1, relwidth=0.2, relheight=0.2)
+        self.estado_civil = self.TipVar.get()
+
     def lista_frame2(self):
         """LISTA DE EXIBICAO"""
         style = ttk.Style(janela)
