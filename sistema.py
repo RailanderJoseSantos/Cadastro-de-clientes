@@ -8,8 +8,10 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import SimpleDocTemplate, Image
 import webbrowser
-janela = Tk()
+from tkinter import  tix
+janela = tix.Tk()
 
+#pyinstaller --onefile --noconsole --windowed sistema.py
 class Relatorios():
     def printCliente(self,nomeCliente):
         webbrowser.open(nomeCliente+".pdf")
@@ -197,10 +199,11 @@ class Aplicacao(Funcs, Relatorios):
         #altura começa em 50%: 0.5
         self.frame2.place(relx=0.02,rely=0.5, relwidth=0.96, relheight=0.46)
     def widgets_frame1(self):
-        """Botão limpar dados"""
+
         self.moldura_bt = Canvas(self.frame1, bd=0, bg='#1e3743',highlightbackground='gray',
                                  highlightthickness=5)
         self.moldura_bt.place(relx=0.19, rely=0.08, relwidth=0.22,  relheight=0.19)
+        """Botão limpar dados"""
         self.bt_limpar = Button(self.frame1, text="Limpar", bd=2, bg='#107db2',
                                 activebackground='#108ecb', activeforeground='white',
                                 fg='white', font=('verdana','8', 'bold'), command=self.limpa_tela)
@@ -209,6 +212,9 @@ class Aplicacao(Funcs, Relatorios):
         self.bt_buscar = Button(self.frame1, text="Buscar", bd=2, bg='#107db2',
                                 fg='white', font=('verdana','8', 'bold'), command=self.busca_cliente)
         self.bt_buscar.place(relx=0.3, rely=0.1, relwidth=0.1, relheight=0.15)
+
+        self.balao_buscar = tix.Balloon(self.frame1)
+        self.balao_buscar.bind_widget(self.bt_buscar, balloonmsg="Digite nome ou cidade do cliente que deseja pesquisar")
         """Botão novo"""
         self.bt_novo = Button(self.frame1, text="Salvar", bd=2, bg='#107db2',
                                 fg='white', font=('verdana','8', 'bold'), command=self.add_cliente)
