@@ -319,12 +319,23 @@ class Aplicacao(Funcs, Relatorios):
         menubar.add_cascade(label="Opções", menu = filemenu)
         menubar.add_cascade(label="Relatórios", menu=filemenu2)
 
-        filemenu.add_cascade(label="Limpa Cliente", command=self.limpa_tela)
+        filemenu.add_cascade(label="Janela 2", command=self.janela2)
         #lambda me permite passar parametro dentro do command
         filemenu2.add_cascade(label="Rel. Cadastro", command=self.geraRelatCliente)
         filemenu2.add_cascade(label="Suporte", command=lambda: webbrowser.open('https://wa.me/+5531991335387'))
         filemenu2.add_separator()
         filemenu.add_command(label="Sair", command=Quit)
 
+    def janela2(self):
+        self.janela2 = Toplevel()
+        self.janela2.title("Janela 2")
+        self.janela2.configure(background='lightblue')
+        self.janela2.geometry("400x200")
+        self.janela2.resizable(False, False)
+        #de onde vem
+        self.janela2.transient(self.janela)
+        self.janela2.focus_force()
+        #impede digitar em outra janela
+        self.janela2.grab_set()
 Aplicacao()
 
