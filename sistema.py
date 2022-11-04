@@ -12,6 +12,32 @@ from tkinter import  tix
 janela = tix.Tk()
 from tkinter import messagebox
 #pyinstaller --onefile --noconsole --windowed sistema.py
+
+class GradientFrame(Canvas):
+    def __init__(self, parent, color1="#C6CCFF", color2="gray35", **kwargs):
+        Canvas.__init__(self,parent, **kwargs)
+        self._color1 = color1
+        self._color2 = color2
+        self.bind("<Configure>", self._graw_gradient)
+    def _graw_gradient(self, event=None):
+        self.delete("gradient")
+        width = self.winfo_width()
+        height = self.winfo_height()
+        limit = width
+        (r1,g1,b1) = self.winfo_rgb(self._color1)
+        (r2,g2,b2) = self.winfo_rgb(self._color2)
+        r_ratio = float(r2-r1)/limit
+        g_ratio = float(g2-g1)/limit
+        b_ratio = float(b2-b1)/limit
+        for i in range(limit):
+            nr = int(r1 +(r_ratio *i))
+            ng = int(g1 +(g_ratio *i))
+            nb = int(b1 +(b_ratio *i))
+            color = "#%4.4x%4.4x%4.4x" % (nr, ng, nb)
+            self.create_line(i, 0, i, height, tags=("gradient",), fill=color)
+        self.lower("gradiente")
+
+
 class Relatorios():
     def printCliente(self,nomeCliente):
         webbrowser.open(nomeCliente+".pdf")
@@ -204,7 +230,7 @@ class Aplicacao(Funcs, Relatorios):
         self.frame2.place(relx=0.02,rely=0.5, relwidth=0.96, relheight=0.46)
     def widgets_frame1(self):
         self.abas = ttk.Notebook(self.frame1)
-        self.aba1 = Frame(self.abas)
+        self.aba1 = GradientFrame(self.abas,"silver","white")
         self.aba2 = Frame(self.abas)
 
         self.aba1.configure(background="#dfe3ee")
