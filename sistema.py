@@ -11,6 +11,20 @@ import webbrowser
 from tkinter import  tix
 janela = tix.Tk()
 from tkinter import messagebox
+from tkcalendar import Calendar, DateEntry
+
+class Validadores():
+    def validate_entry2(self, text):
+        if text == "": return True
+        try:
+            value = int(text)
+        except ValueError:
+            return False
+        return  0 <= value <=100
+
+
+
+
 #pyinstaller --onefile --noconsole --windowed sistema.py
 
 class GradientFrame(Canvas):
@@ -199,10 +213,24 @@ class Funcs():
             self.select_lista()
         self.desconecta_db()
 
+    def calendario(self):
+        self.calendario1 = Calendar(self.aba2, fg="gray75",bg="blue", font=("Times","9","bold"), locale='pt_br')
+        self.calendario1.place(relx=0.5,rely=0.1)
+        self.calDataInicio = Button(self.aba2, text="Inserir Data", command=self.print_cal)
+        self.calDataInicio.place(relx=0.85, rely=0.85, height=25, width=100)
+
+    def print_cal(self):
+        dataIni = self.calendario1.get_date()
+        self.calendario1.destroy()
+        self.entry_data.delete(0, END)
+        self.entry_data.insert(END,dataIni)
+        self.calDataInicio.destroy()
+
     #se uma classe vai usar outra as outras deve passada por parametro
-class Aplicacao(Funcs, Relatorios):
+class Aplicacao(Funcs, Relatorios, Validadores):
     def __init__(self):
         self.janela = janela
+        self.validaEntradas()
         self.tela()
         self.frames_tela()
         self.widgets_frame1()
@@ -274,7 +302,7 @@ class Aplicacao(Funcs, Relatorios):
         self.lb_codigo = Label(self.aba1, text="Código",bg='#dfe3ee', fg='#107db2')
         self.lb_codigo.place(relx=0.05, rely=0.05)
         
-        self.codigo_entry = Entry(self.aba1,bg='lightgray', fg='#000')
+        self.codigo_entry = Entry(self.aba1,validate="key", validatecommand=self.vcmd2)
         self.codigo_entry.place(relx=0.05, rely=0.15, relwidth=0.08)
 
         #criacao da label e entrada do nome cliente
@@ -335,6 +363,12 @@ class Aplicacao(Funcs, Relatorios):
         #ao clicar 2x no registro chamar função:
         self.listaCli.bind("<Double-1>", self.OneDoubleClick)
 
+        ##calendario
+        self.bt_calendario = Button(self.aba2, text="Data", command=self.calendario)
+        self.bt_calendario.place(relx=0.5, rely=0.02)
+        self.entry_data = Entry(self.aba2, width=10)
+        self.entry_data.place(relx=0.5, rely=0.2)
+
     def Menus(self):
         menubar = Menu(self.janela)
         self.janela.config(menu=menubar)
@@ -363,5 +397,10 @@ class Aplicacao(Funcs, Relatorios):
         self.janela2.focus_force()
         #impede digitar em outra janela
         self.janela2.grab_set()
+
+    def validaEntradas(self):
+        self.vcmd2 = (self.janela.register(self.validate_entry2), "%P")
+
+
 Aplicacao()
 
