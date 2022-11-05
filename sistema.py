@@ -401,6 +401,5 @@ class Aplicacao(Funcs, Relatorios, Validadores):
     def validaEntradas(self):
         self.vcmd2 = (self.janela.register(self.validate_entry2), "%P")
 
-
 Aplicacao()
 

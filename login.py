@@ -1,7 +1,8 @@
 from tkinter import *
 import base64
+from subprocess import run
+from sistema import Aplicacao as sistema
 janela = Tk()
-
 class Funcs():
     def images_base64(self):
         #site base64.guru
@@ -35,7 +36,7 @@ class Login(Funcs):
         self.moldura_bt.place(relx=0.46, rely=0.859, relwidth=0.2,  relheight=0.1)"""
         self.bt_logar = Button(text="Logar", bd=9, bg='#12c9c1',
                                 activebackground='#108ecb', activeforeground='white',
-                                fg='white', font=('verdana', '8', 'bold'))
+                                fg='white', font=('verdana', '8', 'bold'),command=self.logar)
         self.bt_logar.place(relx=0.41, rely=0.86, relwidth=0.25, relheight=0.1)
 
         self.lbl_usuario = Label(self.janela, text="Usuário:", bg='#b3b3b3', fg='white',font=('verdana', '10', 'bold'))
@@ -50,7 +51,9 @@ class Login(Funcs):
         self.senha_entry = Entry(self.janela, show="*")
         self.senha_entry.place(relx=0.25, rely=0.740, relwidth=0.58)
 
-
-
-
+def logar(self):
+    if self.usuario_entry.get() =="Railander" and self.senha_entry.get()=="123":
+        sistema.jane
 Login()
+
+
