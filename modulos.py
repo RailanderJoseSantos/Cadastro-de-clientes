@@ -12,3 +12,4 @@ from tkinter import  tix
 janela = tix.Tk()
 from tkinter import messagebox
 from tkcalendar import Calendar, DateEntry
+from placeHolder import EntryPlaceHold

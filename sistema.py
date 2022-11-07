@@ -87,7 +87,7 @@ class Aplicacao(Funcs, Relatorios, Validadores):
         self.lb_nome = Label(self.aba1, text="Nome",bg='#dfe3ee', fg='#107db2')
         self.lb_nome.place(relx=0.05, rely=0.35)
         
-        self.nome_entry = Entry(self.aba1)
+        self.nome_entry = EntryPlaceHold(self.aba1,'Digite o nome do cliente')
         self.nome_entry.place(relx=0.05, rely=0.45, relwidth=0.8)
 
         #criacao da label e entrada do telefone
