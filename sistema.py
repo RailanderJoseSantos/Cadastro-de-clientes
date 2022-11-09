@@ -78,30 +78,43 @@ class Aplicacao(Funcs, Relatorios, Validadores):
 
         #criacao da label e entrada do codigo
         self.lb_codigo = Label(self.aba1, text="Código",bg='#dfe3ee', fg='#107db2')
-        self.lb_codigo.place(relx=0.05, rely=0.05)
-        
+        self.lb_codigo.place(relx=0.05, rely=0.04)
         self.codigo_entry = Entry(self.aba1,validate="key", validatecommand=self.vcmd2)
         self.codigo_entry.place(relx=0.05, rely=0.15, relwidth=0.08)
 
         #criacao da label e entrada do nome cliente
         self.lb_nome = Label(self.aba1, text="Nome",bg='#dfe3ee', fg='#107db2')
-        self.lb_nome.place(relx=0.05, rely=0.35)
+        self.lb_nome.place(relx=0.05, rely=0.28)
         
         self.nome_entry = EntryPlaceHold(self.aba1,'Digite o nome do cliente')
-        self.nome_entry.place(relx=0.05, rely=0.45, relwidth=0.8)
+        self.nome_entry.place(relx=0.05, rely=0.38, relwidth=0.4)
 
         #criacao da label e entrada do telefone
         self.lb_telefone = Label(self.aba1, text="Telefone",bg='#dfe3ee', fg='#107db2')
-        self.lb_telefone.place(relx=0.05, rely=0.6)
+        self.lb_telefone.place(relx=0.05, rely=0.52)
         
         self.telefone_entry = Entry(self.aba1)
-        self.telefone_entry.place(relx=0.05, rely=0.7, relwidth=0.4)
+        self.telefone_entry.place(relx=0.05, rely=0.62, relwidth=0.4)
 
-        #criacao da label e entrada da cidade
+        self.lb_endereco = Label(self.aba1, text="Endereço",bg='#dfe3ee', fg='#107db2')
+        self.lb_endereco.place(relx=0.05,rely=0.76)
+        self.endereco_entry = Entry(self.aba1)
+        self.endereco_entry.place(relx=0.05,rely=0.86)
+
+        self.btcep = Button(self.aba1, text="Buscar Cep",bd=2, bg='#107db2',fg='white',font=('verdana','7','bold'))
+        self.btcep.place(relx=0.6, rely=0.37, relwidth=0.09, relheight=0.12)
+        self.cep_entry = Entry(self.aba1)
+        self.cep_entry.place(relx=0.70, rely=0.38, relwidth=0.155)
+
         self.lb_cidade = Label(self.aba1, text="Cidade",bg='#dfe3ee', fg='#107db2')
-        self.lb_cidade.place(relx=0.5, rely=0.6)
+        self.lb_cidade.place(relx=0.6,rely=0.52)
         self.cidade_entry = Entry(self.aba1)
-        self.cidade_entry.place(relx=0.5, rely=0.7, relwidth=0.4)
+        self.cidade_entry.place(relx=0.6,rely=0.62,relwidth=0.25)
+
+        self.lb_bairro = Label(self.aba1, text="Bairro", bg='#dfe3ee', fg='#107db2')
+        self.lb_bairro.place(relx=0.6, rely=0.76)
+        self.bairro_entry = Entry(self.aba1)
+        self.bairro_entry.place(relx=0.6, rely=0.86,relwidth=0.25)
 
         ### drop down button
         self.TipVar = StringVar()
