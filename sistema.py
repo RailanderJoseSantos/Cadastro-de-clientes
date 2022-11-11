@@ -2,6 +2,7 @@ from modulos import *
 from validEntry import Validadores
 from frameGrad import GradientFrame
 from reports import Relatorios
+import pycep_correios
 from Funcionalidades import  Funcs
 #pyinstaller --onefile --noconsole --windowed sistema.py
 
@@ -18,6 +19,19 @@ class Aplicacao(Funcs, Relatorios, Validadores):
         self.Menus()
         #necessario looping pra manter janela aberta
         janela.mainloop()
+
+    def cepCorreios(self):
+        try:
+            self.cidade_entry.delete(0, END)
+            self.endereco_entry.delete(0, END)
+            self.bairro_entry.delete(0, END)
+            zipcode = self.cep_entry.get()
+            dadosCep = pycep_correios.get_address_from_cep(zipcode)
+            self.cidade_entry.insert(END, dadosCep['cidade'])
+            self.bairro_entry.insert(END, dadosCep['bairro'])
+            self.endereco_entry.insert(END, dadosCep['logradouro'])
+        except:
+            messagebox.showinfo("Informação:","Cep não encontrado!")
     def tela(self):
         """Config da tela"""
         self.janela.title("Cadastro de Clientes")
@@ -101,7 +115,7 @@ class Aplicacao(Funcs, Relatorios, Validadores):
         self.endereco_entry = Entry(self.aba1)
         self.endereco_entry.place(relx=0.05,rely=0.86)
 
-        self.btcep = Button(self.aba1, text="Buscar Cep",bd=2, bg='#107db2',fg='white',font=('verdana','7','bold'))
+        self.btcep = Button(self.aba1, text="Buscar Cep",bd=2, bg='#107db2',fg='white',font=('verdana','7','bold'), command=self.cepCorreios)
         self.btcep.place(relx=0.6, rely=0.37, relwidth=0.09, relheight=0.12)
         self.cep_entry = Entry(self.aba1)
         self.cep_entry.place(relx=0.70, rely=0.38, relwidth=0.155)
