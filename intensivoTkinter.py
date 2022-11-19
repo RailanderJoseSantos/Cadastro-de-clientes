@@ -52,6 +52,20 @@ bt3.place(relx=0.37, rely=0.05, relwidth=0.15, relheight=0.15)
 
 bt4 = Button(frame1,text='Buscar', bg='gray35',fg='white', font=('verdana',12,'bold'))
 bt4.place(relx=0.53, rely=0.05, relwidth=0.15, relheight=0.15)
+
+label1 = Label(frame1, text='Codigo', font=('verdana', 12, 'bold'))
+label1.place(relx=0.05, rely=0.25, relwidth=0.15, relheight=0.2)
+entry1 = Entry(frame1, font=('verdana', 12, 'bold'))
+entry1.place(relx=0.2, rely=0.3, relwidth=0.15, relheight=0.1)
+
+
+label2 = Label(frame1, text='Nome', font=('verdana', 12, 'bold'))
+label2.place(relx=0.05, rely=0.45, relwidth=0.15, relheight=0.2)
+
+label3 = Label(frame1, text='Telefone', font=('verdana', 12, 'bold'))
+label3.place(relx=0.05, rely=0.65, relwidth=0.15, relheight=0.2)
+
+
 frame2 =Frame(root)
 frame2.place(relx=0.01, rely=0.5, relwidth=0.98, relheight=0.48)
 
