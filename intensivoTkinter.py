@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import  ttk
 root = Tk()
 """ PACK
 #geometry: x, y tamanho, e x,y onde a janela aparecera
@@ -24,6 +25,8 @@ root.geometry('500x400+0+0')
 root.title('Titulo janela')
 root.configure(background='gray40')
 root.resizable(True, True)
+root.minsize(450,350)
+root.maxsize(600,500)
 #tela transparente
 root.attributes('-alpha',8)
 
@@ -61,10 +64,13 @@ entry1.place(relx=0.2, rely=0.3, relwidth=0.15, relheight=0.1)
 
 label2 = Label(frame1, text='Nome', font=('verdana', 12, 'bold'))
 label2.place(relx=0.05, rely=0.45, relwidth=0.15, relheight=0.2)
+entry2 = Entry(frame1, font=('verdana', 12, 'bold'))
+entry2.place(relx=0.2, rely=0.5, relwidth=0.15, relheight=0.1)
 
 label3 = Label(frame1, text='Telefone', font=('verdana', 12, 'bold'))
 label3.place(relx=0.05, rely=0.65, relwidth=0.15, relheight=0.2)
-
+entry3 = Entry(frame1, font=('verdana', 12, 'bold'))
+entry3.place(relx=0.21, rely=0.7, relwidth=0.15, relheight=0.1)
 
 frame2 =Frame(root)
 frame2.place(relx=0.01, rely=0.5, relwidth=0.98, relheight=0.48)
@@ -72,4 +78,14 @@ frame2.place(relx=0.01, rely=0.5, relwidth=0.98, relheight=0.48)
 label1 = Label(frame1, text='Label1')
 label2 = Label(frame2, text='Label2')
 
+lista = ttk.Treeview(frame2, height=5, columns=('col0','col1','col2'))
+lista.heading('#0',text='Código')
+lista.heading('#1',text='Nome')
+lista.heading('#2',text='Telefone')
+lista.column('#0', width=95)
+lista.column('#1', width=195)
+lista.column('#2', width=195)
+lista.place(relx=0.02,rely=0.1, relwidth=0.88, relheight=0.8)
+barra = ttk.Scrollbar(frame2, orient='vertical')
+barra.place(relx=0.91, rely=0.1, relwidth=0.06, relheight=0.8)
 root.mainloop()
